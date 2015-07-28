@@ -47,13 +47,21 @@ module Sith
         expect(expanded.children[1].children[2].type).to eq :int
       end
 
-      it 'can expand just macro' do
+      it 'works correctly with local variables' do
         macros = {identity: Macro.new([:value], false, '~{value}')}
         source = <<-RUBY
           str = "hello world"
           identity(str)
         RUBY
         expanded = MacroExpander.new(macros).expand(source)
+
+        expect(expanded.children[1].type).to eq :begin
+        expect(expanded.children[1].children[0].type).to eq :lvasgn
+        expect(expanded.children[1].children[0].children[0]).to eq :str
+        expect(expanded.children[1].children[0].children[1].type).to eq :lvar
+        expect(expanded.children[1].children[0].children[1].children[0]).to eq :str
+        expect(expanded.children[1].children[1].type).to eq :lvar
+        expect(expanded.children[1].children[1].children[0]).to eq :str
       end
 
       it 'can expand macro mappers' do
