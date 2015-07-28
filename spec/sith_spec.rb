@@ -54,7 +54,6 @@ module Sith
           identity(str)
         RUBY
         expanded = MacroExpander.new(macros).expand(source)
-        p expanded
       end
 
       it 'can expand macro mappers' do

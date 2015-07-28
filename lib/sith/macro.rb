@@ -11,6 +11,8 @@ module Sith
         node.children[0].to_s
       elsif node.type == :string
         node.children[0]
+      elsif node.type == :lvar
+        node.children[0]
       elsif :send
         node.children[1].to_s
       else
